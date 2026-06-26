@@ -1839,22 +1839,26 @@ async function confirmDelete() {
   }
 }
 
-// ➕ボタンを5秒長押しで管理者モード
-let adminLongPressTimer = null;
-document.getElementById("btn-add").addEventListener("touchstart", () => {
-  adminLongPressTimer = setTimeout(() => {
+// ➕ボタンを素早く3回タップで管理者モード
+let adminTapCount = 0;
+let adminTapTimer = null;
+document.getElementById("btn-add").addEventListener("click", (e) => {
+  // 通常の追加モード中は管理者チェックしない
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer = setTimeout(() => {
+    adminTapCount = 0;
+  }, 800);
+  if (adminTapCount >= 3) {
+    adminTapCount = 0;
+    clearTimeout(adminTapTimer);
+    e.stopImmediatePropagation();
     if (!isAdmin) openAdminModal();
     else {
       isAdmin = false;
       showToast("管理者モードを終了しました");
     }
-  }, 2000);
-});
-document.getElementById("btn-add").addEventListener("touchend", () => {
-  clearTimeout(adminLongPressTimer);
-});
-document.getElementById("btn-add").addEventListener("touchmove", () => {
-  clearTimeout(adminLongPressTimer);
+  }
 });
 
 // ============================================================
