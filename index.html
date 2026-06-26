@@ -476,7 +476,7 @@
 <!-- HEADER -->
 
 <div id="header">
-  <h1>♿ こうべ車椅子トイレマップ</h1>
+  <h1 id="app-title">♿ こうべ車椅子トイレマップ</h1>
   <p>神戸市の車椅子対応トイレを現在地からナビゲート</p>
   <div id="filters">
     <button class="filter-btn active" data-filter="all">すべて</button>
@@ -876,7 +876,7 @@ const TOILETS = [
   {
     id: 43, area: "port",
     name: "神戸メディカルケアポートアイランド病院（1F 外来）",
-    lat: 34.6695, lng: 135.2003,
+    lat: 34.6693, lng: 135.2090,
     category: "医療施設",
     time: "24時間（外来は平日8:30〜）",
     h24: true,
@@ -888,7 +888,7 @@ const TOILETS = [
   {
     id: 43, area: "port",
     name: "神戸メディカルケアポートアイランド病院（2F）",
-    lat: 34.6695, lng: 135.2003,
+    lat: 34.6693, lng: 135.2090,
     category: "医療施設",
     time: "24時間",
     h24: true,
@@ -900,7 +900,7 @@ const TOILETS = [
   {
     id: 43, area: "port",
     name: "神戸メディカルケアポートアイランド病院（3F）",
-    lat: 34.6695, lng: 135.2003,
+    lat: 34.6693, lng: 135.2090,
     category: "医療施設",
     time: "24時間",
     h24: true,
@@ -912,7 +912,7 @@ const TOILETS = [
   {
     id: 43, area: "port",
     name: "神戸メディカルケアポートアイランド病院（4F）",
-    lat: 34.6695, lng: 135.2003,
+    lat: 34.6693, lng: 135.2090,
     category: "医療施設",
     time: "24時間",
     h24: true,
@@ -924,7 +924,7 @@ const TOILETS = [
   {
     id: 43, area: "port",
     name: "神戸メディカルケアポートアイランド病院（5F）",
-    lat: 34.6695, lng: 135.2003,
+    lat: 34.6693, lng: 135.2090,
     category: "医療施設",
     time: "24時間",
     h24: true,
@@ -936,7 +936,7 @@ const TOILETS = [
   {
     id: 43, area: "port",
     name: "神戸メディカルケアポートアイランド病院（6F）",
-    lat: 34.6695, lng: 135.2003,
+    lat: 34.6693, lng: 135.2090,
     category: "医療施設",
     time: "24時間",
     h24: true,
@@ -1839,20 +1839,12 @@ async function confirmDelete() {
   }
 }
 
-// ➕ボタンを素早く3回タップで管理者モード
+// タイトルを5回タップで管理者モード（時間制限なし）
 let adminTapCount = 0;
-let adminTapTimer = null;
-document.getElementById("btn-add").addEventListener("click", (e) => {
-  // 通常の追加モード中は管理者チェックしない
+document.getElementById("app-title").addEventListener("click", () => {
   adminTapCount++;
-  clearTimeout(adminTapTimer);
-  adminTapTimer = setTimeout(() => {
+  if (adminTapCount >= 5) {
     adminTapCount = 0;
-  }, 800);
-  if (adminTapCount >= 3) {
-    adminTapCount = 0;
-    clearTimeout(adminTapTimer);
-    e.stopImmediatePropagation();
     if (!isAdmin) openAdminModal();
     else {
       isAdmin = false;
